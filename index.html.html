@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Parisienne&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:#006994;
+    font-family:'Cormorant Garamond', serif;
+}
+
+.page{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:opacity .6s ease;
+    padding:20px;
+}
+
+.page.hide{
+    opacity:0;
+    pointer-events:none;
+}
+
+/* EFEK OMBAR 3 LAPIS + BUIH + SURFING */
+.wave-wrap{
+    position:fixed;
+    bottom:-100%;
+    left:0;
+    width:100%;
+    height:100vh;
+    z-index:9999;
+    transition:transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    pointer-events:none;
+}
+.wave-wrap.up{
+    transform:translateY(-100%);
+}
+
+.wave{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:200%;
+    height:100%;
+    opacity:0.8;
+}
+
+.wave1{
+    background:linear-gradient(to top, #004E64 0%, #006994 50%, #0099cc 100%);
+    border-radius:45% 55% 0 0 / 30% 30% 0 0;
+    animation:ombak1 4s ease-in-out infinite;
+    z-index:3;
+}
+
+.wave2{
+    background:linear-gradient(to top, rgba(0,78,100,0.7) 0%, rgba(0,105,148,0.7) 50%, rgba(0,153,204,0.7) 100%);
+    border-radius:50% 50% 0 0 / 35% 35% 0 0;
+    animation:ombak2 5s ease-in-out infinite;
+    z-index:2;
+    bottom:-10px;
+}
+
+.wave3{
+    background:linear-gradient(to top, rgba(242,224,184,0.3) 0%, rgba(255,255,255,0.5) 100%);
+    border-radius:55% 45% 0 0 / 40% 40% 0 0;
+    animation:ombak3 3s ease-in-out infinite;
+    z-index:4;
+    bottom:-5px;
+    opacity:0.6;
+}
+
+/* PAPAN SURFING DI TENGAH OMBAR */
+.surfboard{
+    position:absolute;
+    bottom:40%;
+    left:50%;
+    width:clamp(60px, 10vw, 80px);
+    height:clamp(150px, 25vh, 200px);
+    transform:translateX(-50%) rotate(-15deg);
+    z-index:5;
+    opacity:0;
+    transition:opacity 0.3s;
+}
+.wave-wrap.up .surfboard{
+    opacity:1;
+    animation:selancar 1.2s ease-in-out;
+}
+
+.surfboard-body{
+    width:100%;
+    height:100%;
+    background:linear-gradient(180deg, #ff6b6b 0%, #ff8e53 50%, #ff6b6b 100%);
+    border-radius:50% 50% 45% 45% / 15% 15% 85% 85%;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    position:relative;
+    overflow:hidden;
+}
+
+.surfboard-body::before{
+    content:"";
+    position:absolute;
+    top:20%;
+    left:50%;
+    transform:translateX(-50%);
+    width:20px;
+    height:60%;
+    background:rgba(255,255,255,0.2);
+    border-radius:50%;
+}
+
+.surfboard-fin{
+    position:absolute;
+    bottom:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    width:30px;
+    height:25px;
+    background:#004E64;
+    clip-path:polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+@keyframes selancar{
+    0%{ transform:translateX(-50%) translateY(100px) rotate(-25deg) scale(0.8); }
+    30%{ transform:translateX(-50%) translateY(-20px) rotate(-10deg) scale(1.1); }
+    60%{ transform:translateX(-50%) translateY(10px) rotate(-15deg) scale(1); }
+    100%{ transform:translateX(-50%) translateY(0) rotate(-15deg) scale(1); }
+}
+
+/* BUIH OMBAR */
+.bubble{
+    position:absolute;
+    bottom:0;
+    width:clamp(5px, 1.5vw, 10px);
+    height:clamp(5px, 1.5vw, 10px);
+    background:rgba(255,255,255,0.6);
+    border-radius:50%;
+    animation:naik 2s ease-in infinite;
+}
+
+.bubble:nth-child(1){ left:10%; animation-delay:0s; }
+.bubble:nth-child(2){ left:25%; animation-delay:0.5s; }
+.bubble:nth-child(3){ left:40%; animation-delay:1s; }
+.bubble:nth-child(4){ left:60%; animation-delay:0.3s; }
+.bubble:nth-child(5){ left:75%; animation-delay:1.2s; }
+.bubble:nth-child(6){ left:90%; animation-delay:0.8s; }
+
+@keyframes ombak1{
+    0%,100%{ transform:translateX(-25%) translateY(0) rotate(0deg); }
+    50%{ transform:translateX(0%) translateY(-10px) rotate(1deg); }
+}
+@keyframes ombak2{
+    0%,100%{ transform:translateX(-30%) translateY(0) rotate(0deg); }
+    50%{ transform:translateX(-5%) translateY(-15px) rotate(-1deg); }
+}
+@keyframes ombak3{
+    0%,100%{ transform:translateX(-20%) translateY(0) scaleX(1); }
+    50%{ transform:translateX(5%) translateY(-5px) scaleX(1.05); }
+}
+@keyframes naik{
+    0%{ bottom:0; opacity:0; }
+    20%{ opacity:1; }
+    100%{ bottom:80%; opacity:0; }
+}
+
+/* SPLASH PAS OMBAR PECAH */
+.splash{
+    position:absolute;
+    top:-30px;
+    left:50%;
+    width:clamp(60px, 15vw, 100px);
+    height:clamp(60px, 15vw, 100px);
+    background:radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    border-radius:50%;
+    transform:translateX(-50%) scale(0);
+    transition:transform 0.6s ease-out;
+}
+.wave-wrap.up .splash{
+    transform:translateX(-50%) scale(3);
+}
+
+/* PAGE 1: AMPLop */
+.envelope{
+    width:min(90vw, 500px);
+    height:min(320px, 50vh);
+    position:relative;
+    cursor:pointer;
+    transition:transform .4s;
+}
+.envelope:hover{ transform:scale(1.03); }
+.envelope-body{
+    width:100%;
+    height:100%;
+    background:#f2e0b8;
+    border-radius:4px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.4);
+    position:relative;
+    overflow:hidden;
+}
+.envelope-body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 1px, transparent 1px 6px);
+    opacity:.3;
+}
+.flap{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:50%;
+    background:#e8d5b0;
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    border-radius:4px 4px 0 0;
+    transform-origin:top;
+    transition:transform .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index:3;
+}
+.envelope.open .flap{ transform:rotateX(180deg); }
+.letter{
+    position:absolute;
+    width:90%;
+    height:85%;
+    background:#efe7dc;
+    left:5%;
+    bottom:5px;
+    border-radius:2px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+    z-index:1;
+    transition:transform .8s .2s;
+}
+.envelope.open .letter{ transform:translateY(-40px); }
+.seal{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:clamp(50px, 12vw, 70px);
+    height:clamp(50px, 12vw, 70px);
+    background:radial-gradient(circle at 30% 30%, #006994, #004E64);
+    border-radius:50%;
+    z-index:4;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:clamp(1.5rem, 4vw, 2rem);
+    color:#f2e0b8;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    transition:all .4s;
+}
+.envelope.open .seal{ transform:translate(-50%, -50%) scale(0); opacity:0; }
+.label{
+    position:absolute;
+    bottom:40px;
+    width:100%;
+    text-align:center;
+    z-index:2;
+}
+.label h1{
+    font-family:'Parisienne', cursive;
+    font-size:clamp(1.5rem, 4vw, 2rem);
+    color:#006994;
+    margin-bottom:5px;
+}
+.label p{ font-size:clamp(0.9rem, 2.5vw, 1rem); color:#49342f; opacity:.8; }
+.hint{
+    position:absolute;
+    bottom:-50px;
+    width:100%;
+    text-align:center;
+    color:#f2e0b8;
+    font-size:clamp(1rem, 2.5vw, 1.1rem);
+    opacity:.8;
+    animation:fade 2s infinite;
+}
+@keyframes fade{ 0%,100%{ opacity:.5; } 50%{ opacity:1; } }
+
+/* PAGE 2: SURAT */
+.paper{
+    width:min(92vw, 650px);
+    height:min(88vh, 700px);
+    background:linear-gradient(rgba(255,255,255,.15), rgba(255,255,255,.05)), #efe7dc;
+    position:relative;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    padding:clamp(40px, 6vw, 70px) clamp(25px, 5vw, 60px);
+    overflow:hidden;
+    border-radius:8px;
+}
+.paper::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.025) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.02) 0 1px, transparent 1px 6px);
+    opacity:.35;
+    pointer-events:none;
+}
+.subtitle{
+    font-family:'Parisienne', cursive;
+    font-size:clamp(1.6rem, 4vw, 2.2rem);
+    color:#006994;
+    text-align:center;
+    margin-bottom:clamp(25px, 4vw, 40px);
+}
+.content{ position:relative; z-index:2; }
+.typing{
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(1.2rem, 3vw, 1.6rem);
+    line-height:1.8;
+    color:#49342f;
+    min-height:200px;
+}
+.cursor{ display:inline-block; animation:blink .8s infinite; }
+@keyframes blink{ 50%{ opacity:0; } }
+
+/* BUTTON CONTAINER */
+.btn-container{
+    position:absolute;
+    bottom:15px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(320px, 90vw);
+    height:60px;
+    opacity:0;
+    transition:.6s;
+    z-index:10;
+}
+.btn-container.show{ opacity:1; }
+.btn{
+    border:2px solid #006994;
+    background:#f2e0b8;
+    padding:clamp(10px, 2.5vw, 12px) clamp(24px, 5vw, 32px);
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(1rem, 2.5vw, 1.2rem);
+    color:#006994;
+    cursor:pointer;
+    border-radius:4px;
+    font-weight:500;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+    transition:all .3s;
+    position:absolute;
+    white-space:nowrap;
+}
+.btn:hover{ background:#006994; color:#f2e0b8; }
+#btnMau{ left:0; top:50%; transform:translateY(-50%); }
+#btnNgga{ right:0; top:50%; transform:translateY(-50%); z-index:999; }
+.decor{ position:absolute; color:#006994; font-size:clamp(1.2rem, 3vw, 1.4rem); opacity:.7; }
+.star1{ top:30px; left:25px; }
+.star2{ top:55px; left:55px; }
+.star3{ bottom:35px; right:25px; }
+
+/* PAGE 3: KALENDER + JAM */
+.paper3{ 
+    padding:clamp(30px, 5vw, 40px) clamp(20px, 4vw, 40px) clamp(20px, 4vw, 30px); 
+    overflow-y:auto; 
+}
+.calendar-header{ text-align:center; margin-bottom:20px; }
+.calendar-header h2{
+    font-family:'Parisienne', cursive;
+    font-size:clamp(1.8rem, 4vw, 2.3rem);
+    color:#006994;
+    margin-bottom:5px;
+}
+.calendar-header p{ font-size:clamp(0.9rem, 2.5vw, 1rem); color:#49342f; opacity:.8; }
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:clamp(5px, 1.5vw, 8px);
+    max-width:450px;
+    margin:0 auto 25px;
+}
+.day-name{
+    text-align:center;
+    font-weight:500;
+    color:#006994;
+    font-size:clamp(0.8rem, 2vw, 0.95rem);
+    padding:6px 0;
+}
+.date{
+    aspect-ratio:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid transparent;
+    border-radius:8px;
+    font-size:clamp(0.9rem, 2.5vw, 1.1rem);
+    color:#49342f;
+    cursor:pointer;
+    transition:all .3s;
+    background:rgba(242, 224, 184, 0.5);
+}
+.date:hover:not(.empty){
+    border-color:#006994;
+    background:#006994;
+    color:#f2e0b8;
+    transform:scale(1.1);
+}
+.date.selected{
+    background:#006994;
+    color:#f2e0b8;
+    border-color:#006994;
+    font-weight:700;
+}
+.date.empty{ cursor:default; background:transparent; }
+
+/* SARAN TEMPAT */
+.place-suggestion{
+    display:none;
+    text-align:center;
+    margin-bottom:20px;
+    padding:15px;
+    background:rgba(242, 224, 184, 0.6);
+    border-radius:12px;
+    border:2px dashed #006994;
+    animation:fadeIn .4s;
+}
+.place-suggestion.show{
+    display:block;
+}
+.place-suggestion p{
+    font-size:clamp(1rem, 2.5vw, 1.2rem);
+    color:#49342f;
+    line-height:1.6;
+}
+
+/* TIME PICKER */
+.time-section{ display:none; text-align:center; animation:fadeIn .4s; }
+.time-section.show{ display:block; }
+.time-title{
+    font-size:clamp(1.2rem, 3vw, 1.4rem);
+    color:#006994;
+    margin-bottom:15px;
+    font-weight:500;
+}
+.time-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:clamp(6px, 2vw, 8px);
+    max-width:400px;
+    margin:0 auto;
+}
+.time-btn{
+    border:2px solid #006994;
+    background:#f2e0b8;
+    padding:clamp(8px, 2vw, 10px);
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(0.85rem, 2vw, 1rem);
+    color:#006994;
+    cursor:pointer;
+    border-radius:6px;
+    transition:all .3s;
+}
+.time-btn:hover{ background:#006994; color:#f2e0b8; transform:scale(1.05); }
+.time-btn.selected{ background:#006994; color:#f2e0b8; font-weight:700; }
+.selected-date{
+    text-align:center;
+    margin-top:25px;
+    font-size:clamp(1.1rem, 3vw, 1.3rem);
+    color:#006994;
+    min-height:50px;
+}
+
+/* PAGE 4: THANK YOU + MONYET - PERSEGI PANJANG RESPONSIVE */
+#page4 .paper{
+    width:min(85vw, 500px);
+    height:min(75vh, 650px);
+    padding:clamp(30px, 5vw, 35px) clamp(25px, 4vw, 45px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.thankyou-content{ 
+    text-align:center; 
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.thankyou-content h2{
+    font-family:'Parisienne', cursive;
+    font-size:clamp(2rem, 5vw, 2.8rem);
+    color:#006994;
+    margin-bottom:20px;
+    animation:pop .6s;
+}
+.thankyou-content p{ 
+    font-size:clamp(1.1rem, 2.8vw, 1.4rem); 
+    color:#49342f; 
+    line-height:1.8; 
+    margin-bottom:30px;
+}
+.monkey-img{
+    width:clamp(200px, 40vw, 280px);
+    height:clamp(200px, 40vw, 280px);
+    border-radius:20px;
+    object-fit:cover;
+    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+    border:5px solid #f2e0b8;
+    animation:float 3s ease-in-out infinite;
+}
+@keyframes pop{ 0%{ transform:scale(0.5); opacity:0; } 100%{ transform:scale(1); opacity:1; } }
+@keyframes float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+@keyframes fadeIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+
+/* TABLET 768px ke bawah */
+@media(max-width:768px){
+    .paper{ height:auto; min-height:70vh; }
+    .time-grid{ grid-template-columns:repeat(3, 1fr); }
+    #page4 .paper{ height:min(80vh, 600px); }
+}
+
+/* MOBILE 600px ke bawah */
+@media(max-width:600px){
+    .paper{ padding:35px 20px; }
+    .envelope{ height:280px; }
+    .btn-container{ width:280px; }
+    .time-grid{ grid-template-columns:repeat(3, 1fr); }
+    #page4 .paper{ width:min(90vw, 400px); height:min(78vh, 550px); }
+}
+
+/* DESKTOP BESAR 1200px ke atas */
+@media(min-width:1200px){
+    .paper{ max-width:700px; }
+    #page4 .paper{ max-width:550px; }
+}
+</style>
+</head>
+<body>
+
+<audio id="bgm" preload="auto" loop>
+    <source src="still love 2.mp3.mpeg" type="audio/mpeg">
+</audio>
+
+<div class="wave-wrap" id="waveWrap">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+    
+    <div class="surfboard">
+        <div class="surfboard-body"></div>
+        <div class="surfboard-fin"></div>
+    </div>
+    
+    <div class="splash"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+</div>
+
+<div class="page" id="page1">
+    <div class="envelope" id="envelope">
+        <div class="envelope-body">
+            <div class="flap"></div>
+            <div class="letter"></div>
+            <div class="seal">✦</div>
+            <div class="label">
+                <h1>For kalaa</h1>
+                <p>Surat kecil untuk kalaa</p>
+            </div>
+        </div>
+        <p class="hint">Klik sini bub</p>
+    </div>
+</div>
+
+<div class="page hide" id="page2">
+    <div class="paper" id="paper">
+        <div class="decor star1">✦</div>
+        <div class="decor star2">✦</div>
+        <div class="decor star3">✦</div>
+        <div class="subtitle">a little note</div>
+        <div class="content">
+            <div class="typing">
+                <span id="text"></span>
+                <span class="cursor">|</span>
+            </div>
+        </div>
+        <div class="btn-container" id="btnContainer">
+            <button class="btn" id="btnMau">mau</button>
+            <button class="btn" id="btnNgga">ngga</button>
+        </div>
+    </div>
+</div>
+
+<div class="page hide" id="page3">
+    <div class="paper paper3">
+        <div class="decor star1">✦</div>
+        <div class="decor star2">✦</div>
+        <div class="decor star3">✦</div>
+        <div class="calendar-header">
+            <h2>Pilih Jadwalnya</h2>
+            <p>Juni 2026 - Mau kapan nih?</p>
+        </div>
+        <div class="calendar" id="calendar"></div>
+        
+        <div class="place-suggestion" id="placeSuggestion">
+            <p>oiyaa buat tempatnya aku ada saran di Teras kayu manis di barra, atau kamu ada saran lain?</p>
+        </div>
+        
+        <div class="time-section" id="timeSection">
+            <div class="time-title">Jam berapa?</div>
+            <div class="time-grid" id="timeGrid"></div>
+        </div>
+        <div class="selected-date" id="selectedDate"></div>
+    </div>
+</div>
+
+<div class="page hide" id="page4">
+    <div class="paper">
+        <div class="decor star1">✦</div>
+        <div class="decor star2">✦</div>
+        <div class="decor star3">✦</div>
+        <div class="thankyou-content">
+            <h2>Makasih yaa</h2>
+            <p>Udah mau ngobrol langsung sama aku<br>Ditunggu ya bub</p>
+            <img class="monkey-img" src="https://i.ibb.co.com/k2v6KpFn/fotbar.jpg" alt="Monyet megang bunga">
+            
+            <button class="btn" id="sendWhatsapp" style="position:relative;margin-top:20px;left:auto;top:auto;transform:none;">
+                kasih tau jadwalnya 📩
+            </button>
+
+            <p style="margin-top:20px; font-size:clamp(1rem, 2.5vw, 1.1rem); opacity:0.8;">Jangan lupa cantik seperti biasa hehe 🙈</p>
+        </div>
+    </div>
+</div>
+
+<script>
+const bgm = document.getElementById('bgm');
+const envelope = document.getElementById('envelope');
+const page1 = document.getElementById('page1');
+const page2 = document.getElementById('page2');
+const page3 = document.getElementById('page3');
+const page4 = document.getElementById('page4');
+const textElement = document.getElementById("text");
+const btnContainer = document.getElementById("btnContainer");
+const btnMau = document.getElementById("btnMau");
+const btnNgga = document.getElementById("btnNgga");
+const calendar = document.getElementById("calendar");
+const timeSection = document.getElementById("timeSection");
+const timeGrid = document.getElementById("timeGrid");
+const selectedDate = document.getElementById("selectedDate");
+const waveWrap = document.getElementById('waveWrap');
+const placeSuggestion = document.getElementById('placeSuggestion'); 
+
+let selectedDay = null;
+let selectedTime = null;
+
+const message = `Hai bub.
+Sebelum lanjut, disini aku cuma mau bilang terima kasih karena kamu sudah meluangkan sedikit waktu untuk membuka surat ini.
+Hmm, I feel like I wanted to talk to you about something important.
+kamu mau ga ngobrol secara langsung?`;
+
+let i = 0;
+let typingStarted = false;
+
+function typingEffect(){
+    if(i < message.length){
+        textElement.innerHTML += message.charAt(i) === "\n" ? "<br><br>" : message.charAt(i);
+        i++;
+        setTimeout(typingEffect, 40);
+    } else {
+        btnContainer.classList.add("show");
+    }
+}
+
+envelope.addEventListener('click', () => {
+    if(bgm){
+        bgm.volume = 0.4;
+        bgm.muted = false;
+        bgm.play().catch(err => {
+            console.log('Audio gagal:', err);
+        });
+    }
+
+    envelope.classList.add('open');
+    setTimeout(() => {
+        page1.classList.add('hide');
+        page2.classList.remove('hide');
+        if(!typingStarted){
+            typingStarted = true;
+            typingEffect();
+        }
+    }, 1000);
+});
+
+// Tombol MAU - OMBAR + SURFING
+btnMau.addEventListener('click', () => {
+    waveWrap.classList.add('up');
+    
+    setTimeout(() => {
+        page2.classList.add('hide');
+        page3.classList.remove('hide');
+        generateCalendar();
+        
+        setTimeout(() => {
+            waveWrap.classList.remove('up');
+        }, 600);
+    }, 1200);
+});
+
+// Tombol NGGA kabur
+function moveButton(){
+    const containerRect = btnContainer.getBoundingClientRect();
+    const btnRect = btnNgga.getBoundingClientRect();
+    
+    const maxX = containerRect.width - btnRect.width - 10;
+    const maxY = containerRect.height - btnRect.height - 10;
+    
+    const randomX = Math.random() * (maxX/2) + maxX/2;
+    const randomY = Math.random() * maxY;
+    
+    btnNgga.style.left = randomX + 'px';
+    btnNgga.style.top = randomY + 'px';
+    btnNgga.style.right = 'auto';
+    btnNgga.style.transform = 'none';
+}
+
+btnNgga.addEventListener('mouseenter', moveButton);
+btnNgga.addEventListener('click', moveButton);
+
+// Kalender Juni 2026
+function generateCalendar(){
+    calendar.innerHTML = '';
+    const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+    days.forEach(day => {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'day-name';
+        dayEl.textContent = day;
+        calendar.appendChild(dayEl);
+    });
+    
+    const firstDay = 1;
+    for(let i = 0; i < firstDay; i++){
+        const empty = document.createElement('div');
+        empty.className = 'date empty';
+        calendar.appendChild(empty);
+    }
+    
+    for(let date = 1; date <= 30; date++){
+        const dateEl = document.createElement('div');
+        dateEl.className = 'date';
+        dateEl.textContent = date;
+        dateEl.addEventListener('click', (e) => selectDate(date, e));
+        calendar.appendChild(dateEl);
+    }
+}
+
+// Pilih tanggal - MUNCULIN SARAN TEMPAT DULU
+function selectDate(date, event){
+    selectedDay = date;
+    document.querySelectorAll('.date.selected').forEach(d => d.classList.remove('selected'));
+    event.target.classList.add('selected');
+    
+    placeSuggestion.classList.add('show');
+    timeSection.classList.add('show');
+    selectedDate.innerHTML = '';
+    generateTime();
+}
+
+// Generate jam 09:00 - 15:00 DOANG
+function generateTime(){
+    timeGrid.innerHTML = '';
+    for(let hour = 9; hour <= 15; hour++){
+        const timeBtn = document.createElement('button');
+        timeBtn.className = 'time-btn';
+        timeBtn.textContent = hour.toString().padStart(2, '0') + ':00';
+        timeBtn.addEventListener('click', (e) => selectTime(hour, e));
+        timeGrid.appendChild(timeBtn);
+    }
+}
+
+// Pilih jam -> page 4
+function selectTime(hour, event){
+    document.querySelectorAll('.time-btn.selected').forEach(t => t.classList.remove('selected'));
+    event.target.classList.add('selected');
+    selectedTime = hour.toString().padStart(2, '0') + ':00';
+    
+    setTimeout(() => {
+        page3.classList.add('hide');
+        page4.classList.remove('hide');
+    }, 800);
+}
+
+// Kirim WA
+document.addEventListener('click', function(e){
+    if(e.target.id === 'sendWhatsapp'){
+        const nomor = '6289628336100'; // GANTI NOMOR KAMU
+        const pesan = `Hai bub \n\nAku pilih jadwal:\n\n📅 Tanggal: ${selectedDay} Juni 2026\n⏰ Jam: ${selectedTime}\n\n`;
+        window.open(`https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`, '_blank');
+    }
+});
+</script>
+</body>
+</html>
